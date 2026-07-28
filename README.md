@@ -62,6 +62,7 @@ Visit the dashboard, use filters (city, restaurant type, date range) to explore:
 
 After exploratory analysis, decided on the following design:
 
+```
 ┌────────────────────────────────────────────────────────────┐
 │  FILTERS (Sidebar)                                         │
 ├────────────────────────────────────────────────────────────┤
@@ -101,7 +102,7 @@ After exploratory analysis, decided on the following design:
 │ └─────────────────────────────────────────┘                │
 │                                                            │
 └────────────────────────────────────────────────────────────┘
-
+```
 
 ## Future
 
