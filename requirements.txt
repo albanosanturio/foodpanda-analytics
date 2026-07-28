@@ -8,6 +8,8 @@ charset-normalizer==3.4.9
 click==8.4.2
 colorama==0.4.6
 fastjsonschema==2.22.1
+geographiclib==2.1
+geopy==2.5.0
 gitdb==4.0.12
 GitPython==3.1.57
 h11==0.16.0
@@ -20,6 +22,7 @@ jsonschema-specifications==2025.9.1
 jupyter_core==5.9.1
 jupytext==1.19.5
 kaggle==2.2.4
+kagglehub==1.0.2
 kagglesdk==0.1.35
 markdown-it-py==4.2.0
 MarkupSafe==3.0.3

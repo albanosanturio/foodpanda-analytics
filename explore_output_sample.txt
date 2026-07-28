@@ -1,0 +1,226 @@
+Shape: (3620, 65)
+
+Columns: ['Order_ID', 'Order_Date', 'Order_Time', 'Order_Month', 'Order_DayOfWeek', 'Order_Status', 'Customer_ID', 'Customer_Name', 'Customer_Phone', 'Customer_Type', 'Delivery_Country', 'Delivery_City', 'Delivery_Area', 'Delivery_Address', 'Delivery_Latitude', 'Delivery_Longitude', 'Restaurant_ID', 'Restaurant_Brand', 'Restaurant_Category', 'Restaurant_Cuisine', 'Restaurant_Founded', 'Restaurant_Country', 'Restaurant_City', 'Restaurant_Area', 'Restaurant_Address', 'Restaurant_Latitude', 'Restaurant_Longitude', 'Restaurant_Rating', 'Restaurant_OnFoodpanda_Since', 'Restaurant_IsChain', 'Product_Name', 'Product_Category', 'Quantity', 'Unit_Price_USD', 'Unit_Cost_USD', 'Order_Subtotal_USD', 'Delivery_Fee_USD', 'Discount_USD', 'Promo_Code', 'Net_Order_Value_USD', 'Food_Cost_USD', 'Restaurant_Commission_USD', 'Packaging_Cost_USD', 'Rider_Salary_Cost_USD', 'Marketing_Cost_USD', 'Platform_Fee_USD', 'Gross_Revenue_USD', 'Total_Cost_USD', 'Gross_Profit_USD', 'Foodpanda_Net_Rev_USD', 'Profit_Margin_Pct', 'Payment_Method', 'Payment_Status', 'Rider_ID', 'Rider_Name', 'Delivery_Time_Min', 'On_Time', 'Rider_Rating', 'Customer_Rating', 'Panda_Pro_Member', 'App_Platform', 'Is_Late_Night_Order', 'Is_Weekend', 'Delivery_Distance_km', 'Hour']
+
+Data types:
+ Order_ID                           str
+Order_Date              datetime64[us]
+Order_Time                         str
+Order_Month                        str
+Order_DayOfWeek                    str
+                             ...      
+App_Platform                       str
+Is_Late_Night_Order                str
+Is_Weekend                         str
+Delivery_Distance_km           float64
+Hour                             int32
+Length: 65, dtype: object
+
+First few rows:
+     Order_ID Order_Date Order_Time Order_Month Order_DayOfWeek    Order_Status Customer_ID  Customer_Name  Customer_Phone Customer_Type Delivery_Country Delivery_City Delivery_Area      Delivery_Address  Delivery_Latitude  Delivery_Longitude Restaurant_ID Restaurant_Brand Restaurant_Category Restaurant_Cuisine  Restaurant_Founded Restaurant_Country Restaurant_City Restaurant_Area Restaurant_Address  Restaurant_Latitude  Restaurant_Longitude  Restaurant_Rating  Restaurant_OnFoodpanda_Since Restaurant_IsChain      Product_Name Product_Category  Quantity  Unit_Price_USD  Unit_Cost_USD  Order_Subtotal_USD  Delivery_Fee_USD  Discount_USD Promo_Code  Net_Order_Value_USD  Food_Cost_USD  Restaurant_Commission_USD  Packaging_Cost_USD  Rider_Salary_Cost_USD  Marketing_Cost_USD  Platform_Fee_USD  Gross_Revenue_USD  Total_Cost_USD  Gross_Profit_USD  Foodpanda_Net_Rev_USD  Profit_Margin_Pct  Payment_Method Payment_Status    Rider_ID     Rider_Name  Delivery_Time_Min On_Time  Rider_Rating  Customer_Rating Panda_Pro_Member App_Platform Is_Late_Night_Order Is_Weekend  Delivery_Distance_km  Hour
+0  FP-003536 2024-01-01      18:24    Jan-2024          Monday  Late Delivered  CUST-00552     Sara Ahmed     83910637681     Returning        Singapore     Singapore        Marina  288 Block 17, Marina           1.327297          103.878187     REST-0075    Dragon Palace         Fine Dining            Chinese                2001          Singapore       Singapore           Bugis      141 Park Lane             1.266854            103.882834                3.4                          2022                 No  Peking Duck Roll          Chinese         3           23.53           7.73               70.59              1.27         10.18     SAVE15                61.68          23.19                      15.26                0.94                   3.80                4.39              1.66              71.86           32.32             29.36                   9.06              40.86     Credit Card           Paid  RIDER-0181    Juan Nguyen                 20     Yes           4.9              3.2               No          Web                  No         No              6.703455    18
+1  FP-000750 2024-01-01      07:54    Jan-2024          Monday        Refunded  CUST-00545       Raj Wong     88920772671         Loyal         Pakistan        Lahore       Gulberg  199 Lane 13, Gulberg          31.517920           74.384172     REST-0014         Domino's           Fast Food            Italian                1960           Pakistan          Lahore             DHA         46 Main St            31.520222             74.369786                4.8                          2020                Yes  Penne Arrabbiata          Italian         3           11.38           3.04               34.14              1.75          4.80     SAVE15                31.09           9.12                       4.69                0.42                   1.32                1.43              0.84              35.89           12.29             18.80                   4.11              52.38      Debit Card       Refunded  RIDER-0107    Maria Ahmed                 34     Yes           3.8              3.7              Yes          iOS                  No         No              1.390061     7
+2  FP-002487 2024-01-01      13:52    Jan-2024          Monday        Refunded  CUST-00216       Nina Kim     97582008349           New        Hong Kong     Hong Kong       Central  269 Lane 19, Central          22.354248          114.186777     REST-0148       Wok & Roll           Fast Food            Chinese                2009          Hong Kong       Hong Kong         Central       87 Park Lane            22.286090            114.127500                4.9                          2019                 No    Dim Sum Basket          Chinese         1           19.01           6.20               19.01              6.28          5.21  NEWUSER30                20.08           6.20                       3.21                0.56                   1.92                0.59              0.60              25.29            9.27             10.81                   7.02              42.74     Credit Card       Refunded  RIDER-0178     Emily Khan                 50      No           2.7              2.8               No      Android                  No         No              9.708878    13
+3  FP-001551 2024-01-01      15:05    Jan-2024          Monday  Late Delivered  CUST-00540  Zara Chaudhry     63712335251     Returning           Taiwan      Taichung        Beitun    11 Block 1, Beitun          24.100647          120.626236     REST-0131     Crispy Wings           Fast Food           American                2016             Taiwan        Taichung           Xitun      196 Market Rd            24.181629            120.711726                4.2                          2022                 No      Loaded Fries         American         2            8.36           2.21               16.72              1.17          0.00        NaN                17.89           4.42                       3.14                0.60                   1.73                1.08              0.52              17.89            7.83             10.06                   1.42              56.23     Credit Card           Paid  RIDER-0117  Omar Chaudhry                 20     Yes           4.8              4.3               No      Android                  No         No             12.488253    15
+4  FP-000382 2024-01-01      20:58    Jan-2024          Monday       Delivered  CUST-00680   Wei Yamamoto     77453932473           New          Myanmar        Yangon         Bahan   60 Street 13, Bahan          16.873409           96.195236     REST-0167      Burger King           Fast Food           American                1953            Myanmar          Yangon           Bahan        87 Food Ave            16.912083             96.229703                3.7                          2022                Yes         Apple Pie         American         3            2.05           0.53                6.15              1.58          0.00        NaN                 7.73           1.59                       1.07                0.24                   1.13                0.42              0.22               7.73            3.38              4.35                   1.08              56.27  Digital Wallet           Paid  RIDER-0149    Nina Rahman                 31     Yes           3.9              3.0               No          iOS                  No         No              5.639522    20
+
+Missing values:
+ Order_ID                0
+Order_Date              0
+Order_Time              0
+Order_Month             0
+Order_DayOfWeek         0
+                       ..
+App_Platform            0
+Is_Late_Night_Order     0
+Is_Weekend              0
+Delivery_Distance_km    0
+Hour                    0
+Length: 65, dtype: int64
+
+Basic stats:
+          Order_ID                  Order_Date Order_Time Order_Month Order_DayOfWeek Order_Status Customer_ID Customer_Name  Customer_Phone Customer_Type Delivery_Country Delivery_City Delivery_Area       Delivery_Address  Delivery_Latitude  Delivery_Longitude Restaurant_ID Restaurant_Brand Restaurant_Category Restaurant_Cuisine  Restaurant_Founded Restaurant_Country Restaurant_City Restaurant_Area Restaurant_Address  Restaurant_Latitude  Restaurant_Longitude  Restaurant_Rating  Restaurant_OnFoodpanda_Since Restaurant_IsChain Product_Name Product_Category     Quantity  Unit_Price_USD  Unit_Cost_USD  Order_Subtotal_USD  Delivery_Fee_USD  Discount_USD    Promo_Code  Net_Order_Value_USD  Food_Cost_USD  Restaurant_Commission_USD  Packaging_Cost_USD  Rider_Salary_Cost_USD  Marketing_Cost_USD  Platform_Fee_USD  Gross_Revenue_USD  Total_Cost_USD  Gross_Profit_USD  Foodpanda_Net_Rev_USD  Profit_Margin_Pct Payment_Method Payment_Status    Rider_ID Rider_Name  Delivery_Time_Min On_Time  Rider_Rating  Customer_Rating Panda_Pro_Member App_Platform Is_Late_Night_Order Is_Weekend  Delivery_Distance_km         Hour
+count        3620                        3620       3620        3620            3620         3620        3620          3620    3.620000e+03          3620             3620          3620          3620                   3620        3620.000000         3620.000000          3620             3620                3620               3620         3620.000000               3620            3620            3620               3620          3620.000000           3620.000000        3620.000000                   3620.000000               3620         3620             3620  3620.000000     3620.000000    3620.000000         3620.000000       3620.000000   3620.000000          2161          3620.000000    3620.000000                3620.000000         3620.000000            3620.000000         3620.000000       3620.000000        3620.000000     3620.000000       3620.000000            3620.000000        3620.000000           3620           3620        3620       3620        3620.000000    3248   3620.000000      3248.000000             3620         3620                3620       3620           3620.000000  3620.000000
+unique       3620                         NaN       1316          12               7            4         794           479             NaN             3               10            17            48                   3610                NaN                 NaN           170               40                   4                 16                 NaN                 10              17              47                153                  NaN                   NaN                NaN                           NaN                  2          159               16          NaN             NaN            NaN                 NaN               NaN           NaN             9                  NaN            NaN                        NaN                 NaN                    NaN                 NaN               NaN                NaN             NaN               NaN                    NaN                NaN              6              2         200        181                NaN       2           NaN              NaN                2            3                   2          2                   NaN          NaN
+top     FP-003536                         NaN      21:55    Aug-2024          Friday    Delivered  CUST-00103  Raj Yamamoto             NaN     Returning         Pakistan     Singapore           DHA  74 Avenue 20, Agrabad                NaN                 NaN     REST-0071      Tim Hortons           Fast Food           American                 NaN           Pakistan       Singapore             DHA      141 Park Lane                  NaN                   NaN                NaN                           NaN                Yes  Onion Rings         American          NaN             NaN            NaN                 NaN               NaN           NaN  LUNCHSPECIAL                  NaN            NaN                        NaN                 NaN                    NaN                 NaN               NaN                NaN             NaN               NaN                    NaN                NaN    Credit Card           Paid  RIDER-0176  Wei Costa                NaN      No           NaN              NaN               No      Android                  No         No                   NaN          NaN
+freq            1                         NaN         11         340             545         2167          12            30             NaN          1442              807           385           179                      2                NaN                 NaN            43              175                1754                835                 NaN                807             385             183                 64                  NaN                   NaN                NaN                           NaN               2007           91              835          NaN             NaN            NaN                 NaN               NaN           NaN           255                  NaN            NaN                        NaN                 NaN                    NaN                 NaN               NaN                NaN             NaN               NaN                    NaN                NaN            983           2885          29         45                NaN    1950           NaN              NaN             2546         1894                2815       2587                   NaN          NaN
+mean          NaN  2024-07-02 22:59:32.154696        NaN         NaN             NaN          NaN         NaN           NaN    8.087969e+10           NaN              NaN           NaN           NaN                    NaN          18.028197           97.833431           NaN              NaN                 NaN                NaN         1983.109945                NaN             NaN             NaN                NaN            18.022669             97.836814           4.008315                   2018.867680                NaN          NaN              NaN     2.072928        9.413657       2.838613           19.466707          2.371776      1.094986           NaN            20.743497       5.869390                   3.298732            0.413978               1.770119            0.967704          0.587169          21.838483        9.021191         11.722307               3.105876          50.919149            NaN            NaN         NaN        NaN          41.300276     NaN      3.740994         3.516071              NaN          NaN                 NaN        NaN              5.494231    11.640608
+min           NaN         2024-01-01 00:00:00        NaN         NaN             NaN          NaN         NaN           NaN    6.031950e+10           NaN              NaN           NaN           NaN                    NaN           1.240457           66.960050           NaN              NaN                 NaN                NaN         1899.000000                NaN             NaN             NaN                NaN             1.249309             66.989519           3.200000                   2016.000000                NaN          NaN              NaN     1.000000        2.030000       0.530000            2.050000          0.400000      0.000000           NaN             2.420000       0.610000                   0.340000            0.110000               0.610000            0.090000          0.050000           2.990000        1.670000         -0.560000              -2.330000         -17.390000            NaN            NaN         NaN        NaN           0.000000     NaN      2.500000         2.000000              NaN          NaN                 NaN        NaN              0.070087     0.000000
+25%           NaN         2024-04-03 00:00:00        NaN         NaN             NaN          NaN         NaN           NaN    7.052193e+10           NaN              NaN           NaN           NaN                    NaN          11.524222           90.403296           NaN              NaN                 NaN                NaN         1960.000000                NaN             NaN             NaN                NaN            11.515450             90.409563           3.500000                   2017.000000                NaN          NaN              NaN     1.000000        5.660000       1.700000            8.717500          1.370000      0.000000           NaN            10.320000       2.630000                   1.467500            0.270000               1.250000            0.410000          0.250000          10.850000        5.000000          5.120000               1.300000          43.422500            NaN            NaN         NaN        NaN          27.000000     NaN      3.100000         2.800000              NaN          NaN                 NaN        NaN              3.438195     6.000000
+50%           NaN         2024-07-05 00:00:00        NaN         NaN             NaN          NaN         NaN           NaN    8.136153e+10           NaN              NaN           NaN           NaN                    NaN          22.271866          100.493842           NaN              NaN                 NaN                NaN         1994.000000                NaN             NaN             NaN                NaN            22.273341            100.489732           4.000000                   2019.000000                NaN          NaN              NaN     2.000000        8.390000       2.510000           14.540000          2.210000      0.000000           NaN            15.725000       4.320000                   2.430000            0.390000               1.640000            0.700000          0.430000          16.745000        7.220000          8.670000               2.440000          53.875000            NaN            NaN         NaN        NaN          43.000000     NaN      3.700000         3.500000              NaN          NaN                 NaN        NaN              5.335293    12.000000
+75%           NaN         2024-10-02 00:00:00        NaN         NaN             NaN          NaN         NaN           NaN    9.065763e+10           NaN              NaN           NaN           NaN                    NaN          24.831008          104.962653           NaN              NaN                 NaN                NaN         2010.000000                NaN             NaN             NaN                NaN            24.840842            104.968549           4.500000                   2021.000000                NaN          NaN              NaN     3.000000       11.522500       3.470000           24.892500          3.120000      1.330000           NaN            26.205000       7.500000                   4.180000            0.510000               2.070000            1.210000          0.750000          27.540000       11.112500         15.240000               4.192500          59.672500            NaN            NaN         NaN        NaN          59.000000     NaN      4.300000         4.300000              NaN          NaN                 NaN        NaN              7.470815    18.000000
+max           NaN         2024-12-30 00:00:00        NaN         NaN             NaN          NaN         NaN           NaN    9.996870e+10           NaN              NaN           NaN           NaN                    NaN          33.769780          123.949652           NaN              NaN                 NaN                NaN         2017.000000                NaN             NaN             NaN                NaN            33.766892            123.944355           4.900000                   2022.000000                NaN          NaN              NaN     5.000000       45.400000      14.840000          204.050000          7.000000     24.100000           NaN           206.540000      61.400000                  39.550000            1.100000               4.370000            8.360000          7.960000         206.540000       73.840000        132.700000              37.560000          69.750000            NaN            NaN         NaN        NaN          75.000000     NaN      5.000000         5.000000              NaN          NaN                 NaN        NaN             14.982390    23.000000
+std           NaN                         NaN        NaN         NaN             NaN          NaN         NaN           NaN    1.139335e+10           NaN              NaN           NaN           NaN                    NaN           9.919942           16.891344           NaN              NaN                 NaN                NaN           29.871597                NaN             NaN             NaN                NaN             9.925664             16.890193           0.532274                      2.019497                NaN          NaN              NaN     1.121858        5.277540       1.634920           16.442027          1.284946      2.370323           NaN            16.170927       5.022216                   2.886493            0.190271               0.718229            0.870398          0.519410          16.781033        6.147900         10.255225               2.889171          11.184291            NaN            NaN         NaN        NaN          21.054598     NaN      0.712978         0.853605              NaN          NaN                 NaN        NaN              2.631525     6.984320
+
+Duplicate rows:
+ 0
+
+ Value counts for 'product_category':
+ Product_Category
+American          835
+Coffee            454
+Japanese          409
+Chinese           329
+Italian           260
+Thai              175
+Chicken           171
+Mexican           150
+Indian            149
+Vietnamese        131
+Nepalese          112
+Middle Eastern    101
+Seafood            96
+Pakistani          93
+Filipino           79
+Korean             76
+Name: count, dtype: int64
+
+ Count unique values for 'product_category':
+ 16
+
+ Value counts for 'product_name':
+ Product_Name
+Onion Rings               91
+Vanilla Milkshake         89
+Chicken McNuggets 10pc    88
+Loaded Fries              86
+Apple Pie                 85
+                          ..
+Sago't Gulaman             5
+Yum Burger                 5
+Ramyeon                    5
+Korean BBQ Set             4
+Tteokbokki                 2
+Name: count, Length: 159, dtype: int64
+
+ Count unique values for 'product_name':
+ 159
+
+ Value counts for 'Restaurant_Brand':
+ Restaurant_Brand
+Tim Hortons        175
+Burger King        157
+Dragon Palace      153
+Yoshinoya          153
+La Mexicana        150
+Pad Thai Street    145
+Domino's           133
+Pho Saigon         131
+Dunkin'            130
+Crispy Wings       126
+McDonald's         117
+TGI Fridays        114
+Peri Peri          114
+Momo Magic         112
+Starbucks          110
+Popeyes            102
+Sushi King          97
+Seafood Bay         96
+Wok & Roll          95
+Biryani House       93
+Pizza Hut           92
+Ichiban Boshi       85
+Hardee's            83
+Din Tai Fung        81
+Jollibee            79
+Pepper Lunch        74
+Curry Kingdom       70
+The Tandoor         61
+BBQ Tonight         58
+Nando's             57
+The Burger Lab      55
+Shawarma Zone       53
+Subway              52
+Falafel House       48
+Costa Coffee        39
+Pasta Palace        35
+Thai Express        30
+KFC                 29
+Spice Garden        18
+Seoul Garden        18
+Name: count, dtype: int64
+
+ Count unique values for 'Restaurant_Brand':
+ 40
+
+ Profits per category: 
+                           sum       mean  count
+Restaurant_Category                            
+Cafe                  3695.80   8.140529    454
+Casual Dining        15561.04  13.209711   1178
+Fast Food            19315.07  11.012013   1754
+Fine Dining           3862.84  16.507863    234
+
+ Rating vs On time: 
+ On_Time
+No     3.504821
+Yes    3.532974
+Name: Customer_Rating, dtype: float64
+
+ net value: 
+ count    3620.000000
+mean       20.743497
+std        16.170927
+min         2.420000
+25%        10.320000
+50%        15.725000
+75%        26.205000
+max       206.540000
+Name: Net_Order_Value_USD, dtype: float64
+
+ margin per day: 
+ Order_Date
+2024-01-01    51.745000
+2024-01-02    49.190588
+2024-01-03    53.681667
+2024-01-04    47.085000
+2024-01-05    52.410000
+                ...    
+2024-12-26    47.743000
+2024-12-27    47.394167
+2024-12-28    50.665455
+2024-12-29    49.626667
+2024-12-30    52.508889
+Name: Profit_Margin_Pct, Length: 365, dtype: float64
+
+ margin vs late night: 
+ Is_Late_Night_Order
+No     50.809766
+Yes    51.301652
+Name: Profit_Margin_Pct, dtype: float64
+
+ Order Status and Late Night Grouping:
+   Is_Late_Night_Order    Order_Status  count  percentage
+0                  No       Cancelled    283   10.053286
+1                  No       Delivered   1705   60.568384
+2                  No  Late Delivered    561   19.928952
+3                  No        Refunded    266    9.449378
+4                 Yes       Cancelled     89   11.055901
+5                 Yes       Delivered    462   57.391304
+6                 Yes  Late Delivered    157   19.503106
+7                 Yes        Refunded     97   12.049689
+
+ on time vs avg distance: 
+ On_Time
+No     5.508398
+Yes    5.442255
+Name: Delivery_Distance_km, dtype: float64
+
+Weekend vs Weekday Average Spend:
+Weekday avg spend: $20.70
+Weekend avg spend: $20.85
+Difference: $0.14 (0.7%)
+Average Delivery Time by Restaurant Category:
+Restaurant_Category
+Casual Dining    41.931239
+Fast Food        41.100912
+Cafe             41.004405
+Fine Dining      40.192308
+Name: Delivery_Time_Min, dtype: float64
+
+                      mean  count
+Restaurant_Category              
+Cafe                 41.00    454
+Casual Dining        41.93   1178
+Fast Food            41.10   1754
+Fine Dining          40.19    234
