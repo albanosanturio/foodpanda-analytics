@@ -104,6 +104,11 @@ After exploratory analysis, decided on the following design:
 │ │ Customer Segmentation                   │                │
 │ └─────────────────────────────────────────┘                │
 │                                                            │
+│ ┌─────────────────────────────────────────┐                │
+│ │ Value vs Distance (scatter)             │                │
+│ │ Time for money                          │                │
+│ └─────────────────────────────────────────┘                │
+│                                                            │
 └────────────────────────────────────────────────────────────┘
 ```
 
