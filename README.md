@@ -22,7 +22,6 @@ Considerations for the analysis:
 Keep in mind, as the kaggle website says, this is synthetically generated data, with realistic distributions and consistent financials.
 
 On-time delivery threshold = 40 minutes.
-
 Dataset has geoloc data, let's infer distance information.
 
 
@@ -42,7 +41,6 @@ Visit the dashboard, use filters (city, restaurant type, date range) to explore:
 - Customer value distribution
 - Margin trends over time
 
-## Key Findings
 
 ## Key Findings
 
@@ -94,6 +92,11 @@ After exploratory analysis, decided on the following design:
 │ ┌─────────────────────────────────────────┐                │
 │ │ Delivery Efficiency (Scatter)           │                │
 │ │ Distance vs Time by City                │                │
+│ └─────────────────────────────────────────┘                │
+│                                                            │
+│ ┌─────────────────────────────────────────┐                │
+│ │ Distance Distribution (Histogram)       │                │
+│ │ Customer Segmentation                   │                │
 │ └─────────────────────────────────────────┘                │
 │                                                            │
 │ ┌─────────────────────────────────────────┐                │
