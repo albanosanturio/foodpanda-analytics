@@ -30,20 +30,6 @@ df['Order_Month'] = pd.Categorical(df['Order_Month'], categories=month_order, or
 st.set_page_config(page_title="FoodPanda Analytics", layout="wide")
 st.title("FoodPanda Analytics Dashboard")
 
-# Add background image from local file
-with open('pattern30.png', 'rb') as f:
-    image_data = base64.b64encode(f.read()).decode()
-
-st.markdown(f"""
-    <style>
-    .stApp {{
-        background-image: url('data:image/png;base64,{image_data}');
-        background-attachment: fixed;
-        background-size: cover;
-    }}
-    </style>
-    """, unsafe_allow_html=True)
-
 # SIDEBAR FILTERS
 st.sidebar.header("Filters")
 
@@ -65,23 +51,6 @@ if city == 'All':
 else:
     df_filtered = df_filtered[df_filtered['Delivery_City'] == city]
 
-
-
-
-
-# # Month filter with "All" option
-# months = sorted(df_filtered['Order_Month'].unique())
-# month = st.sidebar.selectbox('Month', ['All'] + list(months))
-# 
-# if month != 'All':
-#     df_filtered = df_filtered[df_filtered['Order_Month'] == month]
-
-# Month filter with multiselect (clickable boxes)
-# months = sorted(df_filtered['Order_Month'].unique())
-# selected_months = st.sidebar.multiselect('Month', months, default=months)
-# 
-# if selected_months:
-#     df_filtered = df_filtered[df_filtered['Order_Month'].isin(selected_months)]
 
 # Month filter with clickable toggle buttons
 months_filtered = df_filtered['Order_Month'].unique()
@@ -110,7 +79,7 @@ for idx, month in enumerate(months):
     is_selected = month in st.session_state.selected_months
     # Green dot if selected, grey dot if not
     if is_selected:
-        display_text = f"🔴 {month}"
+        display_text = f"🟣 {month}"
     else:
         display_text = f"⚪ {month}"
     
@@ -125,15 +94,170 @@ for idx, month in enumerate(months):
 if st.session_state.selected_months:
     df_filtered = df_filtered[df_filtered['Order_Month'].isin(st.session_state.selected_months)]
 
+# KPI CARDS with larger font
+st.markdown("---")
+st.header("Key Metrics")
+
+col1, col2, col3, col4 = st.columns(4)
+
+with col1:
+    total_orders = len(df_filtered)
+    st.metric("Total Orders", f"{total_orders:,}")
+
+with col2:
+    gmv = df_filtered['Gross_Revenue_USD'].sum()
+    st.metric("GMV", f"${gmv:,.0f}")
+
+with col3:
+    gross_profit = df_filtered['Gross_Profit_USD'].sum()
+    st.metric("Gross Profit", f"${gross_profit:,.0f}")
+
+with col4:
+    margin = df_filtered['Profit_Margin_Pct'].mean()
+    st.metric("Margin %", f"{margin:.1f}%")
+st.markdown("---")
 
 
-# MAIN DASHBOARD
-st.header("Orders by Restaurant Category")
-category_orders = df_filtered.groupby('Restaurant_Category').size().reset_index(name='count')
-fig = px.bar(category_orders, x='Restaurant_Category', y='count', title='Volume of Orders by Category')
+# FINANCIALS SECTION
+st.header("Financials") 
+
+# Profit Trends by Month (Stacked by Category)
+
+# Calculate profit by month and category
+profit_by_month = df_filtered.groupby(['Order_Month', 'Restaurant_Category'])['Gross_Profit_USD'].sum().reset_index()
+
+# Create stacked bar chart
+fig_month = px.bar(profit_by_month, 
+                   x='Order_Month', 
+                   y='Gross_Profit_USD',
+                   color='Restaurant_Category',
+                   title='Total Gross Profit by Month (Stacked by Category)',
+                   labels={'Gross Profit USD': 'Gross Profit ($)'},
+                   barmode='stack')
+
+fig_month.update_traces(hovertemplate='%{y:$.2f}<extra></extra>')
+st.plotly_chart(fig_month, use_container_width=True)
+
+# Calculate profit metrics by category
+profitability = df_filtered.groupby('Restaurant_Category').agg({
+    'Gross_Profit_USD': ['sum', 'mean', 'count']
+}).reset_index()
+
+profitability.columns = ['Restaurant_Category', 'Total_Profit', 'Profit_Per_Order', 'Order_Count']
+profitability = profitability.sort_values('Total_Profit', ascending=False)
+
+# Total Profit per Category (smaller, centered numbers)
+st.markdown("<p style='font-size: 12px; color: #666; margin: 5px 0;'><b>Total Profit</b></p>", unsafe_allow_html=True)
+cols = st.columns(len(profitability))
+
+for idx, (col, row) in enumerate(zip(cols, profitability.itertuples())):
+    with col:
+        st.markdown(f"""
+        <div style="text-align: center;">
+            <p style="font-size: 12px; margin: 0; color: #666;">{row.Restaurant_Category}</p>
+            <p style="font-size: 20px; font-weight: bold; margin: 0; color: #7B2CBF;">${row.Total_Profit:,.0f}</p>
+        </div>
+        """, unsafe_allow_html=True)
 
 
+# Average Profit Per Order (smaller, centered numbers)
+st.markdown("<p style='font-size: 12px; color: #666; margin: 5px 0;'><b>Average</b></p>", unsafe_allow_html=True)
+cols = st.columns(len(profitability))
 
-# Customize hover to show ONLY the count number
-fig.update_traces(hovertemplate='%{y}<extra></extra>')
-st.plotly_chart(fig, use_container_width=True)
+for idx, (col, row) in enumerate(zip(cols, profitability.itertuples())):
+    with col:
+        st.markdown(f"""
+        <div style="text-align: center;">
+            <p style="font-size: 12px; margin: 0; color: #666;">{row.Restaurant_Category}</p>
+            <p style="font-size: 20px; font-weight: bold; margin: 0; color: #7B2CBF;">${row.Profit_Per_Order:.2f}</p>
+        </div>
+        """, unsafe_allow_html=True)
+
+# COST ANALYSIS timeline + breakdown
+st.markdown("---")
+st.header("Cost analysis")
+
+
+# Total Cost Trend by Month (Line Chart)
+st.subheader("Total Cost Trend by Month")
+
+# Calculate total cost by month
+cost_by_month = df_filtered.groupby('Order_Month')['Total_Cost_USD'].sum().reset_index()
+
+# Create line chart
+fig_cost_trend = px.line(cost_by_month, x='Order_Month', y='Total_Cost_USD',
+                         title='Total Cost by Month',
+                         labels={'Total_Cost_USD': 'Total Cost ($)'})
+
+# Style: minimal, purple line
+fig_cost_trend.update_traces(
+    line=dict(color='#7B2CBF', width=3),
+    hovertemplate='%{y:$.0f}<extra></extra>'
+)
+
+fig_cost_trend.update_layout(
+    hovermode='x unified',
+    showlegend=False,
+    xaxis_title='',
+    yaxis_title='',
+    height=300,
+    yaxis=dict(showgrid=False),
+    xaxis=dict(side='top')
+)
+
+st.plotly_chart(fig_cost_trend, use_container_width=True)
+
+
+# Calculate total costs by type
+cost_breakdown = pd.DataFrame({
+    'Cost Type': ['Food Cost', 'Rider Salary', 'Marketing', 'Packaging'],
+    'Amount': [
+        df_filtered['Food_Cost_USD'].sum(),
+        df_filtered['Rider_Salary_Cost_USD'].sum(),
+        df_filtered['Marketing_Cost_USD'].sum(),
+        df_filtered['Packaging_Cost_USD'].sum()
+    ]
+})
+
+# Create pie chart with legend at bottom
+fig_cost = px.pie(cost_breakdown, values='Amount', names='Cost Type',
+                  title='Cost Breakdown by Category')
+
+fig_cost.update_traces(hovertemplate='%{label}: $%{value:,.0f}<extra></extra>')
+fig_cost.update_layout(legend=dict(orientation="h", yanchor="bottom", y=-0.15, xanchor="center", x=0.5))
+
+# Layout: Pie chart on left, data on right
+col_chart, col_data = st.columns([1, 1])
+
+with col_chart:
+    st.plotly_chart(fig_cost, use_container_width=True)
+
+with col_data:
+    # Add spacing to align with pie chart (increased)
+    st.markdown("<div style='margin-top: 120px;'></div>", unsafe_allow_html=True)
+    
+    # Headers with proper alignment (matching value row structure)
+    st.markdown("""
+    <div style="display: flex; align-items: center; margin-bottom: 20px;">
+        <div style="flex: 1;"></div>
+        <p style="font-size: 12px; font-weight: bold; margin: 0; color: #666; flex: 1; text-align: center;">Total</p>
+        <p style="font-size: 12px; font-weight: bold; margin: 0; color: #666; flex: 1; text-align: center;">Average/order</p>
+    </div>
+    """, unsafe_allow_html=True)
+
+    # Data rows
+    cost_types = ['Food_Cost_USD', 'Rider_Salary_Cost_USD', 'Marketing_Cost_USD', 'Packaging_Cost_USD']
+    cost_labels = ['Food Cost', 'Rider Salary', 'Marketing', 'Packaging']
+
+    for label, col_name in zip(cost_labels, cost_types):
+        total = df_filtered[col_name].sum()
+        avg = df_filtered[col_name].mean()
+
+        st.markdown(f"""
+        <div style="margin-bottom: 20px; display: flex; align-items: center;">
+            <p style="font-size: 12px; margin: 0; color: #D3D3D3; flex: 1;">{label}</p>
+            <p style="font-size: 16px; font-weight: bold; margin: 0; color: #7B2CBF; flex: 1; text-align: center;">${total:,.0f}</p>
+            <p style="font-size: 16px; font-weight: bold; margin: 0; color: #7B2CBF; flex: 1; text-align: center;">${avg:.2f}</p>
+        </div>
+        """, unsafe_allow_html=True)
+
