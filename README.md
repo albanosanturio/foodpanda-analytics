@@ -89,6 +89,19 @@ After exploratory analysis, decided on the following design:
 │ └─────────────────────────────────────────┘                │
 │                                                            │
 │ === OPERATIONS ===                                         │
+│                                                            │
+│ ┌─────────────────────────────────────────┐                │
+│ │ Order Value Distribution (Histogram)    │                │
+│ │ Customer Segmentation                   │                │
+│ └─────────────────────────────────────────┘                │
+│                                                            │
+│ ┌─────────────────────────────────────────┐                │
+│ │ Customer type behaviour                 │                │
+│ │ Orders vs Customer Type                 │                │
+│ └─────────────────────────────────────────┘                │
+│                                                            │
+│ === OPERATIONS ===                                         │
+│                                                            │
 │ ┌─────────────────────────────────────────┐                │
 │ │ Delivery Efficiency (Scatter)           │                │
 │ │ Distance vs Time by City                │                │
@@ -96,11 +109,6 @@ After exploratory analysis, decided on the following design:
 │                                                            │
 │ ┌─────────────────────────────────────────┐                │
 │ │ Distance Distribution (Histogram)       │                │
-│ │ Customer Segmentation                   │                │
-│ └─────────────────────────────────────────┘                │
-│                                                            │
-│ ┌─────────────────────────────────────────┐                │
-│ │ Order Value Distribution (Histogram)    │                │
 │ │ Customer Segmentation                   │                │
 │ └─────────────────────────────────────────┘                │
 │                                                            │
