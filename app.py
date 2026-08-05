@@ -38,50 +38,6 @@ df['Delivery_Distance_km'] = df.apply(
 # Page config - TITLE
 st.set_page_config(page_title="FoodPanda Analytics", layout="wide")
 
-
-# Add background image to sidebar only
-# Load both pattern images
-with open('pattern-light.png', 'rb') as f:
-    light_image_data = base64.b64encode(f.read()).decode()
-
-with open('pattern-darkest.png', 'rb') as f:
-    dark_image_data = base64.b64encode(f.read()).decode()
-
-## st.markdown(f"""
-##     <style>
-##     @media (prefers-color-scheme: light) {{
-##         [data-testid="stSidebar"] {{
-##             background-image: url('data:image/png;base64,{light_image_data}');
-##             background-attachment: fixed;
-##             background-size: 40%;
-##             opacity: 1;
-##         }}
-##     }}
-##     
-##     @media (prefers-color-scheme: dark) {{
-##         [data-testid="stSidebar"] {{
-##             background-image: url('data:image/png;base64,{dark_image_data}');
-##             background-color: rgba(255,255,255,0.3);
-##             background-blend-mode: multiply;
-##             background-attachment: fixed;
-##             background-size: 40%;
-##             opacity: 1;
-##         }}
-##     }}
-##     </style>
-##     """, unsafe_allow_html=True)
-
-## st.markdown(f"""
-##     <style>
-##     .stApp {{
-##         background-attachment: fixed;
-##         background-size: cover;
-##         opacity: 0.9;
-##     }}
-##     </style>
-##     """, unsafe_allow_html=True)
-
-
 st.title("🐼 FoodPanda Analytics Dashboard 🐼")
 
 
