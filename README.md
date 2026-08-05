@@ -1,3 +1,15 @@
+## Live Dashboard
+
+🔗 **[View the Live Dashboard](https://share.streamlit.io/albanosanturio/foodpanda-analytics/main/app.py)**
+
+*Dashboard is live and accessible online. All data loads from Kaggle API at runtime.*
+
+## 🚀 Quick Links
+
+- **Live Dashboard:** https://share.streamlit.io/albanosanturio/foodpanda-analytics/main/app.py
+- **GitHub Repo:** https://github.com/albanosanturio/foodpanda-analytics
+- **GitHub Repo:** https://albanosanturio.github.io/
+
 # FoodPanda Analytics Dashboard
 
 Interactive Streamlit dashboard analyzing delivery platform economics: profitability, operational efficiency, and customer behavior.
