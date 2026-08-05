@@ -24,8 +24,6 @@ df['Delivery_Distance_km'] = df.apply(
     ).km, axis=1
 )
 
-
-
 # Columns that we could delete:
 # Customer_Name - not used, and too much information, based on who accesses this dashboard may be necessary to delete
 # Customer_Phone - same logic
@@ -37,11 +35,57 @@ df['Delivery_Distance_km'] = df.apply(
 # Rider_ID - same logic
 
 
-# Page config
+# Page config - TITLE
 st.set_page_config(page_title="FoodPanda Analytics", layout="wide")
-st.title("FoodPanda Analytics Dashboard")
 
-# SIDEBAR FILTERS
+
+# Add background image to sidebar only
+# Load both pattern images
+with open('pattern-light.png', 'rb') as f:
+    light_image_data = base64.b64encode(f.read()).decode()
+
+with open('pattern-darkest.png', 'rb') as f:
+    dark_image_data = base64.b64encode(f.read()).decode()
+
+## st.markdown(f"""
+##     <style>
+##     @media (prefers-color-scheme: light) {{
+##         [data-testid="stSidebar"] {{
+##             background-image: url('data:image/png;base64,{light_image_data}');
+##             background-attachment: fixed;
+##             background-size: 40%;
+##             opacity: 1;
+##         }}
+##     }}
+##     
+##     @media (prefers-color-scheme: dark) {{
+##         [data-testid="stSidebar"] {{
+##             background-image: url('data:image/png;base64,{dark_image_data}');
+##             background-color: rgba(255,255,255,0.3);
+##             background-blend-mode: multiply;
+##             background-attachment: fixed;
+##             background-size: 40%;
+##             opacity: 1;
+##         }}
+##     }}
+##     </style>
+##     """, unsafe_allow_html=True)
+
+## st.markdown(f"""
+##     <style>
+##     .stApp {{
+##         background-attachment: fixed;
+##         background-size: cover;
+##         opacity: 0.9;
+##     }}
+##     </style>
+##     """, unsafe_allow_html=True)
+
+
+st.title("🐼 FoodPanda Analytics Dashboard 🐼")
+
+
+# BUILDING SIDEBAR FILTERS
 st.sidebar.header("Filters")
 
 # Country filter with "All" option
@@ -105,32 +149,56 @@ for idx, month in enumerate(months):
 if st.session_state.selected_months:
     df_filtered = df_filtered[df_filtered['Order_Month'].isin(st.session_state.selected_months)]
 
+
+st.markdown("<div style='margin-top: 30px;'></div>", unsafe_allow_html=True)
+
+
+# START BUILDING DASHBOARD CONTENT AND METRICS #7B2CBF
+
 # KPI CARDS with larger font
 
-st.header("Key Metrics")
-
 col1, col2, col3, col4 = st.columns(4)
+total_orders = len(df_filtered)
+gmv = df_filtered['Gross_Revenue_USD'].sum()
+gross_profit = df_filtered['Gross_Profit_USD'].sum()
+margin = df_filtered['Profit_Margin_Pct'].mean()
 
 with col1:
-    total_orders = len(df_filtered)
-    st.metric("Total Orders", f"{total_orders:,}")
+    st.markdown(f"""
+    <div style="text-align: center; padding: 20px; border: 2px solid #7B2CBF ; border-radius: 8px;">
+        <p style="font-size: 12px; text-align: center; margin: 0 0 10px 0;">Total Orders</p>
+        <p style="font-size: 32px; font-weight: bold; margin: 0;">{total_orders:,}</p>
+    </div>
+    """, unsafe_allow_html=True)
 
 with col2:
-    gmv = df_filtered['Gross_Revenue_USD'].sum()
-    st.metric("GMV", f"${gmv:,.0f}")
+    st.markdown(f"""
+    <div style="text-align: center; padding: 20px; border: 2px solid #7B2CBF; border-radius: 8px;">
+        <p style="font-size: 12px; text-align: center; margin: 0 0 10px 0;">GMV</p>
+        <p style="font-size: 32px; font-weight: bold; margin: 0;">${gmv:,.0f}</p>
+    </div>
+    """, unsafe_allow_html=True)
 
 with col3:
-    gross_profit = df_filtered['Gross_Profit_USD'].sum()
-    st.metric("Gross Profit", f"${gross_profit:,.0f}")
+    st.markdown(f"""
+    <div style="text-align: center; padding: 20px; border: 2px solid #7B2CBF; border-radius: 8px;">
+        <p style="font-size: 12px; text-align: center; margin: 0 0 10px 0;">Gross Profit</p>
+        <p style="font-size: 32px; font-weight: bold; margin: 0;">${gross_profit:,.0f}</p>
+    </div>
+    """, unsafe_allow_html=True)
 
 with col4:
-    margin = df_filtered['Profit_Margin_Pct'].mean()
-    st.metric("Margin %", f"{margin:.1f}%")
-st.markdown("---")
+    st.markdown(f"""
+    <div style="text-align: center; padding: 20px; border: 2px solid #7B2CBF; border-radius: 8px;">
+        <p style="font-size: 12px; text-align: center; margin: 0 0 10px 0;">Margin %</p>
+        <p style="font-size: 32px; font-weight: bold; margin: 0;">{margin:.1f}%</p>
+    </div>
+    """, unsafe_allow_html=True)
 
 
 # FINANCIALS SECTION
-st.header("Financials") 
+st.markdown("---")
+st.header("01. Financials") 
 
 # Profit Trends by Month (Stacked by Category)
 
@@ -142,8 +210,14 @@ fig_month = px.bar(profit_by_month,
                    x='Order_Month', 
                    y='Gross_Profit_USD',
                    color='Restaurant_Category',
-                   title='Total Gross Profit by Month (Stacked by Category)',
+                   title='financials - profit - Total Gross Profit by Month (Stacked by Category)',
                    labels={'Gross Profit USD': 'Gross Profit ($)'},
+                   color_discrete_map={
+                       'Cafe': '#FF1493',
+                       'Casual Dining': '#6C63FF',
+                       'Fast Food': '#FF006E',
+                       'Fine Dining': '#7B2CBF'
+                   },
                    barmode='stack')
 
 fig_month.update_traces(hovertemplate='%{y:$.2f}<extra></extra>')
@@ -158,46 +232,43 @@ profitability.columns = ['Restaurant_Category', 'Total_Profit', 'Profit_Per_Orde
 profitability = profitability.sort_values('Total_Profit', ascending=False)
 
 # Total Profit per Category (smaller, centered numbers)
-st.markdown("<p style='font-size: 12px; color: #666; margin: 5px 0;'><b>Total Profit</b></p>", unsafe_allow_html=True)
+st.markdown("<p style='font-size: 12px;  margin: 5px 0;'><b>Total Profit</b></p>", unsafe_allow_html=True)
 cols = st.columns(len(profitability))
 
 for idx, (col, row) in enumerate(zip(cols, profitability.itertuples())):
     with col:
         st.markdown(f"""
         <div style="text-align: center;">
-            <p style="font-size: 12px; margin: 0; color: #666;">{row.Restaurant_Category}</p>
+            <p style="font-size: 12px; margin: 0; ">{row.Restaurant_Category}</p>
             <p style="font-size: 20px; font-weight: bold; margin: 0; color: #7B2CBF;">${row.Total_Profit:,.0f}</p>
         </div>
         """, unsafe_allow_html=True)
 
 
 # Average Profit Per Order (smaller, centered numbers)
-st.markdown("<p style='font-size: 12px; color: #666; margin: 5px 0;'><b>Average</b></p>", unsafe_allow_html=True)
+st.markdown("<p style='font-size: 12px;  margin: 5px 0;'><b>Average</b></p>", unsafe_allow_html=True)
 cols = st.columns(len(profitability))
 
 for idx, (col, row) in enumerate(zip(cols, profitability.itertuples())):
     with col:
         st.markdown(f"""
         <div style="text-align: center;">
-            <p style="font-size: 12px; margin: 0; color: #666;">{row.Restaurant_Category}</p>
+            <p style="font-size: 12px; margin: 0; ">{row.Restaurant_Category}</p>
             <p style="font-size: 20px; font-weight: bold; margin: 0; color: #7B2CBF;">${row.Profit_Per_Order:.2f}</p>
         </div>
         """, unsafe_allow_html=True)
 
 # COST ANALYSIS timeline + breakdown
-st.markdown("---")
-st.header("Cost analysis")
 
 
 # Total Cost Trend by Month (Line Chart)
-st.subheader("Total Cost Trend by Month")
 
 # Calculate total cost by month
 cost_by_month = df_filtered.groupby('Order_Month')['Total_Cost_USD'].sum().reset_index()
 
 # Create line chart
 fig_cost_trend = px.line(cost_by_month, x='Order_Month', y='Total_Cost_USD',
-                         title='Total Cost by Month',
+                         title='financials - cost - Total Cost by Month',
                          labels={'Total_Cost_USD': 'Total Cost ($)'})
 
 # Style: minimal, purple line
@@ -231,14 +302,17 @@ cost_breakdown = pd.DataFrame({
 })
 
 # Create pie chart with legend at bottom
-fig_cost = px.pie(cost_breakdown, values='Amount', names='Cost Type',
-                  title='Cost Breakdown by Category')
+fig_cost = px.pie(cost_breakdown, 
+                  values='Amount', 
+                  names='Cost Type',
+                  title='financials - cost - Cost Breakdown by Category',
+                  color_discrete_sequence=['#FF1493', '#6C63FF', '#FF006E', '#7B2CBF'])
 
 fig_cost.update_traces(hovertemplate='%{label}: $%{value:,.0f}<extra></extra>')
 fig_cost.update_layout(legend=dict(orientation="h", yanchor="bottom", y=-0.15, xanchor="center", x=0.5))
 
 # Layout: Pie chart on left, data on right
-col_chart, col_data = st.columns([1, 1])
+col_chart, col_data = st.columns([1, 0.6])
 
 with col_chart:
     st.plotly_chart(fig_cost, use_container_width=True)
@@ -251,8 +325,8 @@ with col_data:
     st.markdown("""
     <div style="display: flex; align-items: center; margin-bottom: 20px;">
         <div style="flex: 1;"></div>
-        <p style="font-size: 12px; font-weight: bold; margin: 0; color: #666; flex: 1; text-align: center;">Total</p>
-        <p style="font-size: 12px; font-weight: bold; margin: 0; color: #666; flex: 1; text-align: center;">Average/order</p>
+        <p style="font-size: 12px; font-weight: bold; margin: 0; flex: 1; text-align: center;">Total</p>
+        <p style="font-size: 12px; font-weight: bold; margin: 0; flex: 1; text-align: center;">Average/order</p>
     </div>
     """, unsafe_allow_html=True)
 
@@ -266,7 +340,7 @@ with col_data:
 
         st.markdown(f"""
         <div style="margin-bottom: 20px; display: flex; align-items: center;">
-            <p style="font-size: 12px; margin: 0; color: #D3D3D3; flex: 1;">{label}</p>
+            <p style="font-size: 12px; margin: 0; flex: 1;">{label}</p>
             <p style="font-size: 16px; font-weight: bold; margin: 0; color: #7B2CBF; flex: 1; text-align: center;">${total:,.0f}</p>
             <p style="font-size: 16px; font-weight: bold; margin: 0; color: #7B2CBF; flex: 1; text-align: center;">${avg:.2f}</p>
         </div>
@@ -274,10 +348,9 @@ with col_data:
 
 
 
-st.markdown("---")
-st.markdown("---")
 # CUSTOMER BEHAVIOUR SECTION
-st.header("Customer Segmentation")
+st.markdown("---")
+st.header("02. Customer behaviour")
 
 # ORDER VALUE DISTRIBUTION (HISTOGRAM - FIXED BUCKETS)
 
@@ -291,7 +364,7 @@ value_dist.columns = ['Bucket', 'Count']
 
 # Create bar chart
 fig_value_dist = px.bar(value_dist, x='Bucket', y='Count',
-                        title='Distribution of Order Values',
+                        title='customer - Distribution of Order Values',
                         labels={'Count': 'Number of Orders'})
 
 # Create color list - purple for regular, bright magenta for $100+
@@ -312,7 +385,6 @@ fig_value_dist.update_layout(
 )
 
 st.plotly_chart(fig_value_dist, use_container_width=True)
-st.markdown("---")
 
 
 # Calculate metrics by customer type
@@ -331,13 +403,23 @@ customer_metrics['Customer_Type'] = pd.Categorical(customer_metrics['Customer_Ty
                                                     ordered=True)
 customer_metrics = customer_metrics.sort_values('Customer_Type')
 
+# Color mapping for cards
+color_map = {
+    'New': '#7B2CBF',
+    'Returning': '#FF1493',
+    'Loyal': '#6C63FF'
+}
+
 # Layout: Pie chart on left, metrics on right
 col_chart, col_metrics = st.columns([1, 1])
 
 with col_chart:
     # Pie chart
-    fig_customer = px.pie(customer_metrics, values='Orders', names='Customer_Type',
-                          title='Orders by Customer Type')
+    fig_customer = px.pie(customer_metrics,
+                           values='Orders',
+                            names='Customer_Type',
+                            color_discrete_sequence=['#FF1493', '#6C63FF', '#7B2CBF'],
+                          title='customer - Orders by Customer Type')
     fig_customer.update_traces(hovertemplate='%{label}: %{value:,} orders<extra></extra>')
     fig_customer.update_layout(legend=dict(orientation="h", yanchor="bottom", y=-0.15, xanchor="center", x=0.5))
     st.plotly_chart(fig_customer, use_container_width=True)
@@ -351,21 +433,20 @@ with col_metrics:
     
     for metric_col, row in zip(metric_cols, customer_metrics.itertuples()):
         with metric_col:
+            card_color = color_map[row.Customer_Type]
             st.markdown(f"""
             <div style="text-align: center; padding: 15px; background-color: #f0f2f6; border-radius: 8px; margin-bottom: 20px;">
-                <p style="font-size: 12px; font-weight: bold; margin: 0 0 12px 0; color: #333;">{row.Customer_Type}</p>
-                <p style="font-size: 11px; margin: 8px 0; color: #7B2CBF;"><b>{int(row.Orders):,}</b> orders</p>
-                <p style="font-size: 11px; margin: 8px 0; color: #7B2CBF;"><b>${row.Avg_Value:.2f}</b> avg</p>
-                <p style="font-size: 11px; margin: 8px 0; color: #7B2CBF;"><b>${row.Total_Profit:,.0f}</b> profit</p>
+                <p style="font-size: 13px; font-weight: bold; margin: 0 0 12px 0; color: {card_color};">{row.Customer_Type}</p>
+                <p style="font-size: 11px; margin: 8px 0; color: {card_color};"><b>{int(row.Orders):,}</b> orders</p>
+                <p style="font-size: 11px; margin: 8px 0; color: {card_color};"><b>${row.Avg_Value:.2f}</b> avg</p>
+                <p style="font-size: 11px; margin: 8px 0; color: {card_color};"><b>${row.Total_Profit:,.0f}</b> profit</p>
             </div>
             """, unsafe_allow_html=True)
 
-st.markdown("---")
 # OPERATIONS SECTION
-st.header("Operations") 
-# DELIVERY EFFICIENCY (SCATTER: DISTANCE VS TIME)
 st.markdown("---")
-st.header("Delivery Efficiency")
+st.header("03. Operations") 
+# DELIVERY EFFICIENCY (SCATTER: DISTANCE VS TIME)
 
 # Create copy and map labels
 df_plot = df_filtered.copy()
@@ -380,7 +461,7 @@ with col_scatter:
                                 x='Delivery_Distance_km', 
                                 y='Delivery_Time_Min',
                                 color='On_Time_Label',
-                                title='Time, distance and late deliveries',
+                                title='ops - Time, distance and late deliveries',
                                 labels={'Delivery_Distance_km': 'Distance (km)', 
                                        'Delivery_Time_Min': 'Time (minutes)',
                                        'On_Time_Label': 'Status'},
@@ -421,8 +502,6 @@ with col_pie:
 
 
 # DELIVERY DISTANCE DISTRIBUTION (STACKED BAR - FIXED BUCKETS)
-st.markdown("---")
-st.header("Delivery Distance Distribution")
 
 # Create copy and map labels
 df_hist = df_filtered.copy()
@@ -438,7 +517,7 @@ distance_dist = df_hist.groupby(['Distance_Bucket', 'On_Time_Label']).size().res
 # Create stacked bar chart
 fig_distance = px.bar(distance_dist, x='Distance_Bucket', y='Count',
                       color='On_Time_Label',
-                      title='Distribution of Delivery Distances (Stacked)',
+                      title='ops - Distribution of Delivery Distances (Stacked)',
                       color_discrete_map={'On time': '#7B2CBF', 'Late': '#FF1493'},
                       barmode='stack')
 
@@ -459,18 +538,16 @@ fig_distance.update_layout(
 
 st.plotly_chart(fig_distance, use_container_width=True)
 
-# PEAK TIME ANALYSIS & ORDER VALUE VS DISTANCE
-st.markdown("---")
-st.header("Peak Time & Distance Analysis")
+
 
 # Layout: Peak time on left, scatter on right
 col_peak, col_scatter = st.columns([1, 1])
 
 # PEAK TIME ANALYSIS & ORDER VALUE VS DISTANCE
-st.markdown("---")
-st.header("Peak Time & Distance Analysis")
+
 # Layout: Peak time on left, scatter on right
-col_peak, col_scatter = st.columns([1, 1])
+col_peak, col_scatter = st.columns([1.2, 1])
+
 with col_peak:
     # Extract hour from Order_Time
     df_plot_time = df_filtered.copy()
@@ -483,7 +560,7 @@ with col_peak:
     # Horizontal bar chart
     fig_peak = px.bar(peak_time, x='Count', y='Hour',
                       color='On_Time_Label',
-                      title='Orders by Hour (Peak Time)',
+                      title='ops - Orders by Hour (Peak Time)',
                       color_discrete_map={'On time': '#7B2CBF', 'Late': '#FF1493'},
                       barmode='stack',
                       orientation='h')
@@ -510,31 +587,30 @@ with col_scatter:
     least_busy = hourly_orders.loc[hourly_orders['Orders'].idxmin()]
     
     # Add spacing to move down
-    st.markdown("<div style='margin-top: 100px;'></div>", unsafe_allow_html=True)
-    
-    # Busiest Hour card
-    st.markdown(f"""
-    <div style="text-align: center; padding: 7px; background-color: #f0f2f6; border-radius: 8px; margin-bottom: 10px;">
-        <p style="font-size: 12px; margin: 0 0 5px 0; color: #666;">Busiest Hour</p>
-        <p style="font-size: 28px; font-weight: bold; margin: 0 0 8px 0; color: #333;">{int(busiest['Hour']):02d}:00</p>
-        <p style="font-size: 13px; margin: 0; color: #7B2CBF;"><b>↑ {int(busiest['Orders'])} orders</b></p>
-    </div>
-    """, unsafe_allow_html=True)
+    st.markdown("<div style='margin-top: 130px;'></div>", unsafe_allow_html=True)
     
     # Least Busy Hour card
     st.markdown(f"""
-    <div style="text-align: center; padding: 7px; background-color: #f0f2f6; border-radius: 8px;">
-        <p style="font-size: 12px; margin: 0 0 5px 0; color: #666;">Least Busy Hour</p>
-        <p style="font-size: 28px; font-weight: bold; margin: 0 0 8px 0; color: #333;">{int(least_busy['Hour']):02d}:00</p>
+    <div style="text-align: center; padding: 3px; background-color: #f0f2f6; border-radius: 8px; margin-bottom: 10px;">
+        <p style="font-size: 12px; margin: 0 0 2px 0; color: #666;">Least Busy Hour</p>
+        <p style="font-size: 20px; font-weight: bold; margin: 0 0 2px 0; color: #333;">{int(least_busy['Hour']):02d}:00</p>
         <p style="font-size: 13px; margin: 0; color: #FF1493;"><b>↓ {int(least_busy['Orders'])} orders</b></p>
     </div>
     """, unsafe_allow_html=True)
 
+    # Busiest Hour card
+    st.markdown(f"""
+    <div style="text-align: center; padding: 3px; background-color: #f0f2f6; border-radius: 8px; margin-bottom: 10px;">
+        <p style="font-size: 12px; margin: 0 0 2px 0; color: #666;">Busiest Hour</p>
+        <p style="font-size: 20px; font-weight: bold; margin: 0 0 2px 0; color: #333;">{int(busiest['Hour']):02d}:00</p>
+        <p style="font-size: 13px; margin: 0; color: #7B2CBF;"><b>↑ {int(busiest['Orders'])} orders</b></p>
+    </div>
+    """, unsafe_allow_html=True)
+    
+
 
 
 # RIDER PERFORMANCE ANALYSIS (SCATTER + ZONES)
-st.markdown("---")
-st.header("Rider Performance Analysis")
 
 # Calculate late % and order count by rider
 rider_performance = df_filtered.groupby('Rider_ID').agg({
@@ -545,14 +621,14 @@ rider_performance.columns = ['Rider_ID', 'Deliveries', 'Late_Pct']
 
 # Layout: Chart on left, cards on right
 
-col_chart, col_cards = st.columns([1.5, 1])
+col_chart, col_cards = st.columns([1.2, 1])
 
 with col_chart:
     # Create scatter plot
     fig_rider = px.scatter(rider_performance, 
                            x='Deliveries', 
                            y='Late_Pct',
-                           title='Rider Performance: Volume vs Late %',
+                           title='ops - Rider Performance: Volume vs Late %',
                            labels={'Deliveries': 'Number of Deliveries',
                                   'Late_Pct': 'Late Delivery %'},
                            hover_data={'Rider_ID': True, 'Deliveries': True, 'Late_Pct': ':.1f'})
@@ -566,7 +642,7 @@ with col_chart:
     fig_rider.add_shape(
         type="rect",
         x0=0, y0=0, x1=rider_performance['Deliveries'].max(), y1=40,
-        fillcolor="#C77DFF", opacity=0.3, layer="below",
+        fillcolor="#7B2CBF", opacity=0.5, layer="below",
         line=dict(width=0)
     )
     
@@ -574,7 +650,7 @@ with col_chart:
     fig_rider.add_shape(
         type="rect",
         x0=0, y0=60, x1=rider_performance['Deliveries'].max(), y1=100,
-        fillcolor="#FF99CC", opacity=0.2, layer="below",
+        fillcolor="#FF1493", opacity=0.5, layer="below",
         line=dict(width=0)
     )
 
@@ -604,8 +680,8 @@ with col_cards:
     <div style="text-align: center; padding: 8px; background-color: #f0f2f6; border-radius: 8px; margin-bottom: 6px; min-height: 50px; display: flex; flex-direction: column; justify-content: center;">
         <p style="font-size: 10px; margin: 0 0 2px 0; color: #666;">Late Zone (> 60% late)</p>
         <div style="display: flex; justify-content: center; gap: 8px; align-items: center;">
-            <p style="font-size: 14px; font-weight: bold; margin: 0; color: #FF69B4;">{red_riders} riders</p>
-            <p style="font-size: 13px; margin: 0; color: #FF69B4;"><b>{(red_riders/total_riders)*100:.1f}%</b></p>
+            <p style="font-size: 14px; font-weight: bold; margin: 0; color: #FF1493;">{red_riders} riders</p>
+            <p style="font-size: 13px; margin: 0; color: #FF1493;"><b>{(red_riders/total_riders)*100:.1f}%</b></p>
         </div>
     </div>
     """, unsafe_allow_html=True)
@@ -626,8 +702,8 @@ with col_cards:
     <div style="text-align: center; padding: 8px; background-color: #f0f2f6; border-radius: 8px; margin-bottom: 6px; min-height: 50px; display: flex; flex-direction: column; justify-content: center;">
         <p style="font-size: 10px; margin: 0 0 2px 0; color: #666;">On time zone (< 40% late)</p>
         <div style="display: flex; justify-content: center; gap: 8px; align-items: center;">
-            <p style="font-size: 14px; font-weight: bold; margin: 0; color: #9D4EDD;">{green_riders} riders</p>
-            <p style="font-size: 13px; margin: 0; color: #9D4EDD;"><b>{(green_riders/total_riders)*100:.1f}%</b></p>
+            <p style="font-size: 14px; font-weight: bold; margin: 0; color: #7B2CBF;">{green_riders} riders</p>
+            <p style="font-size: 13px; margin: 0; color: #7B2CBF;"><b>{(green_riders/total_riders)*100:.1f}%</b></p>
         </div>
     </div>
     """, unsafe_allow_html=True)

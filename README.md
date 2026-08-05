@@ -39,7 +39,7 @@ Visit the dashboard, use filters (city, restaurant type, date range) to explore:
 - Profitability by segment
 - Delivery performance impact
 - Customer value distribution
-- Margin trends over time
+- Operations trends over time
 
 
 ## Key Findings
@@ -55,6 +55,17 @@ Visit the dashboard, use filters (city, restaurant type, date range) to explore:
 - Weekend avg order: $20.85 | Weekday: $20.70 (0.7% difference)
 - No significant seasonal demand variation
 - Restaurant category has minimal impact on delivery time (~40–42 min across all types)
+- 29% of riders have >60% late delivery rate — operational risk
+- Only 11% of riders achieve <40% late rate — high performers
+- Higher cost Food Cost: 65.1% of total costs (primary cost driver)
+- Second higher cost Rider Salary: 19.6%
+- Loyal customers: $17,165 total profit (39.8% of orders)
+- Returning customers: $16,891 total profit (39.3% of orders)
+- New customers: $8,379 total profit (20.8% of orders)
+- Avg ticket slightly higher on loyal customers
+- Overall on-time rate: 40% | Late: 60%
+- Distance does NOT strongly correlate with time
+
 
 ## Sketch
 
@@ -84,11 +95,16 @@ After exploratory analysis, decided on the following design:
 │ └─────────────────────────────────────────┘                │
 │                                                            │
 │ ┌─────────────────────────────────────────┐                │
+│ │ Cost Totals    (Line Chart)             │                │
+│ │ Track cost total through time           │                │
+│ └─────────────────────────────────────────┘                │
+│                                                            │
+│ ┌─────────────────────────────────────────┐                │
 │ │ Cost Breakdown (Pie Chart)              │                │
 │ │ [Food | Rider | Marketing | Packaging]  │                │
 │ └─────────────────────────────────────────┘                │
 │                                                            │
-│ === OPERATIONS ===                                         │
+│ === CUSTOMER BEHAVIOUR ===                                 │
 │                                                            │
 │ ┌─────────────────────────────────────────┐                │
 │ │ Order Value Distribution (Histogram)    │                │
