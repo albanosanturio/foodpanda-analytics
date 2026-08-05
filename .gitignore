@@ -2,7 +2,7 @@
 venv/
 
 # Data files
-data/
+#data/
 
 # Streamlit
 .streamlit/

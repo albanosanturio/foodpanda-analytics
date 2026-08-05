@@ -3,11 +3,15 @@ import pandas as pd
 import plotly.express as px
 import base64
 from geopy.distance import geodesic
+import kagglehub
+
+# Download dataset
+dataset_path = kagglehub.dataset_download("faheem113141/foodpanda-pakistan-customer-orders-and-churn-dataset")
+df = pd.read_csv(f'{dataset_path}/foodpanda_raw.csv')
 
 # Emojis to select from 🔴🟣🐼
 
-# Load data
-df = pd.read_csv('data/foodpanda_raw.csv')
+# Edit data
 df['Order_Date'] = pd.to_datetime(df['Order_Date'])
 df['Order_Month'] = df['Order_Month'].str.replace('-2024', '') #redundant, all info is from such year
 
